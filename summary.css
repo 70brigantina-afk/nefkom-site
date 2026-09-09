@@ -1,0 +1,1 @@
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.summary-grid article{border-top:2px solid var(--ink);padding:28px 18px}.summary-grid b{font-family:Georgia,serif;font-size:1.7rem;font-weight:400}.summary-grid p{color:#59625d}@media(max-width:900px){.summary-grid{grid-template-columns:1fr}}
