@@ -4,18 +4,19 @@ const bySlug=s=>CLIENTS.find(x=>x.slug===s);
 const money=n=>new Intl.NumberFormat('ru-RU').format(Math.round(n))+' ₽';
 
 const blueprints={
- beauty:{title:'Запись без звонков — клиент выбирает услугу, мастера и время сам',sub:'Демонстрация лендинга с онлайн-записью, подтверждением и мини-панелью администратора.',features:['Онлайн-запись 24/7','Выбор мастера и услуги','Напоминание о визите','Мини-CRM расписания']},
- medical:{title:'Понятный путь от услуги до записи на консультацию',sub:'Демо медицинского лендинга: направления, специалисты, ответы на вопросы и выбор времени.',features:['Запись на консультацию','Выбор направления/врача','FAQ и подготовка к визиту','Подтверждение и напоминание']},
- build:{title:'Клиент считает проект и оставляет уже квалифицированную заявку',sub:'Демо лендинга с квизом/калькулятором и мини-CRM заявок.',features:['Квиз-смета','Сбор параметров проекта','Кейсы и этапы','Мини-CRM заявок']},
- auto:{title:'Стоимость услуги и свободное время — без переписки с администратором',sub:'Демо для автоуслуг: калькулятор пакета + запись на слот.',features:['Калькулятор пакета','Выбор авто/услуги','Онлайн-запись','Напоминание клиенту']},
- school:{title:'Запись на пробное занятие и подбор программы в одном окне',sub:'Демо для школы: выбор курса, уровень, расписание и пробное занятие.',features:['Мини-тест уровня','Расписание групп','Пробный урок','Автонапоминание']},
- legal:{title:'Навигатор по услугам + запись на консультацию',sub:'Клиент выбирает свою ситуацию, получает подходящее направление и бронирует время.',features:['Навигатор проблемы','Подбор услуги','Список документов','Запись на консультацию']},
- event:{title:'Проверка даты + бриф + ориентир бюджета за несколько минут',sub:'Демо для event/wedding-бизнеса: клиент сразу оставляет структурированный запрос.',features:['Проверка даты','Квиз по формату','Ориентир бюджета','Бриф в мини-CRM']}
+ beauty:{title:'Запись без звонков — клиент выбирает услугу, мастера и время сам',sub:'Демонстрация премиального лендинга с онлайн-записью, подтверждением и мини-панелью администратора.',features:['Онлайн-запись 24/7','Выбор мастера и услуги','Напоминание о визите','Мини-CRM расписания'],label:'Beauty'},
+ medical:{title:'Понятный путь от услуги до записи на консультацию',sub:'Чистый медицинский лендинг: направления, специалисты, ответы на вопросы и выбор времени.',features:['Запись на консультацию','Выбор направления/врача','FAQ и подготовка к визиту','Подтверждение и напоминание'],label:'Medical'},
+ build:{title:'Клиент считает проект и оставляет уже квалифицированную заявку',sub:'Интерьерный лендинг с квизом/калькулятором и мини-CRM заявок.',features:['Квиз-смета','Сбор параметров проекта','Кейсы и этапы','Мини-CRM заявок'],label:'Design & Build'},
+ auto:{title:'Стоимость услуги и свободное время — без переписки с администратором',sub:'Тёмный премиальный сценарий для автоуслуг: калькулятор пакета + запись на слот.',features:['Калькулятор пакета','Выбор авто/услуги','Онлайн-запись','Напоминание клиенту'],label:'Auto'},
+ school:{title:'Запись на пробное занятие и подбор программы в одном окне',sub:'Живой образовательный лендинг: выбор курса, уровень, расписание и пробное занятие.',features:['Мини-тест уровня','Расписание групп','Пробный урок','Автонапоминание'],label:'Education'},
+ legal:{title:'Навигатор по услугам + запись на консультацию',sub:'Строгий экспертный сценарий: клиент выбирает ситуацию, получает направление и бронирует время.',features:['Навигатор проблемы','Подбор услуги','Список документов','Запись на консультацию'],label:'Legal'},
+ event:{title:'Проверка даты + бриф + ориентир бюджета за несколько минут',sub:'Эмоциональный event-лендинг: клиент сразу оставляет структурированный запрос.',features:['Проверка даты','Квиз по формату','Ориентир бюджета','Бриф в мини-CRM'],label:'Event'}
 };
 
 function showDirectory(){
+ document.body.removeAttribute('data-theme');
  document.body.innerHTML='<div class="wrap directory"><span class="badge">50 персональных демо</span><h1>Демо-витрина потенциальных клиентов</h1><p class="muted">Внутренняя страница Ирины. Откройте нужный бизнес — клиенту отправляйте только его персональную ссылку.</p><input id="q" class="search" placeholder="Найти бизнес или нишу"><div id="cards" class="cards"></div></div>';
- const draw=(q='')=>{ const list=CLIENTS.filter(c=>(c.name+' '+c.niche+' '+c.city).toLowerCase().includes(q.toLowerCase())); $('#cards').innerHTML=list.map(c=>'<a class="client-card" href="?client='+encodeURIComponent(c.slug)+'"><b>'+c.name+'</b><small>'+c.city+' · '+c.niche+'</small><p>'+blueprints[c.type].features[0]+' + '+blueprints[c.type].features[1]+'</p></a>').join(''); };
+ const draw=(q='')=>{ const list=CLIENTS.filter(c=>(c.name+' '+c.niche+' '+c.city).toLowerCase().includes(q.toLowerCase())); $('#cards').innerHTML=list.map(c=>'<a class="client-card" data-type="'+c.type+'" href="?client='+encodeURIComponent(c.slug)+'"><b>'+c.name+'</b><small>'+c.city+' · '+c.niche+'</small><p>'+blueprints[c.type].features[0]+' + '+blueprints[c.type].features[1]+'</p></a>').join(''); };
  draw(); $('#q').addEventListener('input',e=>draw(e.target.value));
 }
 
@@ -43,15 +44,18 @@ function bindTool(c){
 
 function showClient(c){
  const b=blueprints[c.type], rating=c.rating?c.rating.toFixed(1)+' / 5':'рейтинг уточняется', reviews=c.reviews?c.reviews+' отзывов':'отзывы уточняются';
+ document.body.dataset.theme=c.type;
  document.title=c.name+' — демонстрационный прототип';
  document.body.innerHTML=`
- <div class="wrap"><div class="top"><span class="badge">Персональный демо-прототип</span><div class="demo-note">Неофициальная концепция, подготовленная специально для ${c.name}. Тексты, цены и слоты демонстрационные — финальная версия настраивается по данным бизнеса.</div></div>
- <section class="hero"><div class="eyebrow">${c.city} · ${c.niche}</div><h1>${c.name}</h1><p>${b.title}</p><div class="actions"><a class="btn" href="#demo">Посмотреть, как работает</a><a class="btn alt" href="tel:${(c.phone||'').replace(/[^+0-9]/g,'')}">Контакт бизнеса</a></div></section>
- <section class="stats"><div class="stat"><b>${rating}</b><span>публичный рейтинг</span></div><div class="stat"><b>${reviews}</b><span>социальное доказательство</span></div><div class="stat"><b>24/7</b><span>приём заявок онлайн</span></div><div class="stat"><b>1 окно</b><span>заявки, расписание и контакты</span></div></section>
- <section id="demo" class="grid"><div class="panel"><div class="eyebrow">Что предлагается</div><h2>${b.title}</h2><p class="muted">${b.sub}</p><div class="features">${b.features.map(x=>'<div class="feature"><b>'+x+'</b><span class="muted">Можно адаптировать под реальные процессы бизнеса.</span></div>').join('')}</div><div class="mini-crm"><b>Мини-CRM / панель администратора</b><div class="crm-row"><span>Новая заявка</span><span><span class="pill">Новая</span></span><span>сегодня</span></div><div class="crm-row"><span>Клиент: демо</span><span><span class="pill">Подтверждена</span></span><span>15:00</span></div><div class="crm-row"><span>Напоминание</span><span><span class="pill">Авто</span></span><span>за 2 ч.</span></div></div></div>
- <div class="panel"><div class="eyebrow">Интерактивное демо</div><h2>Попробуйте как клиент</h2><p class="muted">${c.address}. Контакт: ${c.phone||'уточняется'}.</p>${toolHtml(c.type)}</div></section>
- <section class="section"><div class="cases"><div class="case"><h3>Меньше ручной переписки</h3><p>Клиент сам проходит ключевые шаги и оставляет структурированную заявку.</p></div><div class="case"><h3>Понятнее для нового клиента</h3><p>Услуги, сценарий, доверие и следующий шаг собраны в одном месте.</p></div><div class="case"><h3>Можно развивать</h3><p>Подключить аналитику, уведомления, оплату, CRM, календарь, SEO-страницы и рекламу.</p></div></div></section>
- <footer class="footer"><b>${c.name}</b><br>Демонстрационная концепция. Не является официальным сайтом бизнеса и не публикует реальные цены/расписание.</footer></div>`;
+ <div class="wrap">
+  <div class="top"><span class="badge">${b.label} · персональный демо-прототип</span><div class="demo-note">Неофициальная концепция, подготовленная специально для ${c.name}. Тексты, цены и слоты демонстрационные — финальная версия настраивается по данным бизнеса.</div></div>
+  <section class="hero-shell"><div class="hero"><div class="hero-copy"><div class="eyebrow">${c.city} · ${c.niche}</div><h1>${c.name}</h1><p>${b.title}</p><div class="actions"><a class="btn" href="#demo">Посмотреть, как работает</a><a class="btn alt" href="tel:${(c.phone||'').replace(/[^+0-9]/g,'')}">Контакт бизнеса</a></div></div><div class="hero-art"><img src="assets/${c.type}.svg" alt="Визуальная концепция для ${c.niche}"></div></div></section>
+  <section class="stats"><div class="stat"><b>${rating}</b><span>публичный рейтинг</span></div><div class="stat"><b>${reviews}</b><span>социальное доказательство</span></div><div class="stat"><b>24/7</b><span>приём заявок онлайн</span></div><div class="stat"><b>1 окно</b><span>заявки, расписание и контакты</span></div></section>
+  <section id="demo" class="grid"><div class="panel"><div class="eyebrow">Что предлагается</div><h2>${b.title}</h2><p class="muted">${b.sub}</p><div class="features">${b.features.map(x=>'<div class="feature"><b>'+x+'</b><span class="muted">Можно адаптировать под реальные процессы бизнеса.</span></div>').join('')}</div><div class="mini-crm"><b>Мини-CRM / панель администратора</b><div class="crm-row"><span>Новая заявка</span><span><span class="pill">Новая</span></span><span>сегодня</span></div><div class="crm-row"><span>Клиент: демо</span><span><span class="pill">Подтверждена</span></span><span>15:00</span></div><div class="crm-row"><span>Напоминание</span><span><span class="pill">Авто</span></span><span>за 2 ч.</span></div></div></div>
+  <div class="panel"><div class="eyebrow">Интерактивное демо</div><h2>Попробуйте как клиент</h2><p class="muted">${c.address}. Контакт: ${c.phone||'уточняется'}.</p>${toolHtml(c.type)}</div></section>
+  <section class="section"><div class="cases"><div class="case"><h3>Меньше ручной переписки</h3><p>Клиент сам проходит ключевые шаги и оставляет структурированную заявку.</p></div><div class="case"><h3>Понятнее для нового клиента</h3><p>Услуги, сценарий, доверие и следующий шаг собраны в одном месте.</p></div><div class="case"><h3>Можно развивать</h3><p>Подключить аналитику, уведомления, оплату, CRM, календарь, SEO-страницы и рекламу.</p></div></div></section>
+  <footer class="footer"><b>${c.name}</b><br>Демонстрационная концепция. Не является официальным сайтом бизнеса и не публикует реальные цены/расписание.</footer>
+ </div>`;
  bindTool(c);
 }
 const p=new URLSearchParams(location.search), slug=p.get('client');
